@@ -1,16 +1,21 @@
 package com.server.controllers;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import com.server.services.AuthenticationService;
+import com.server.utils.AuthenticationRequest;
+import com.server.utils.AuthenticationResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class LoginController {
 
-    @GetMapping("/")
-    public ResponseEntity<?> testRoute() {
-        return new ResponseEntity<>("Hello", HttpStatus.OK);
+    private final AuthenticationService authenticationService;
+
+    @PostMapping
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
